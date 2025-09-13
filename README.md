@@ -1,0 +1,1 @@
+# stocks-hunter-2.0
