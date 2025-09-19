@@ -1,0 +1,61 @@
+@use "variables";
+@import url('https://fonts.googleapis.com/css2?family=Anton+SC&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Anton SC', sans-serif;
+  background-color: #f8f9fa;
+}
+
+header {
+  background-color: white;
+  display: flex;
+  column-gap: 32px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 80px;
+
+  img {
+    max-width: 180px;
+  }
+
+  h1 {
+    font-size: 80px;
+    font-weight: 400;
+    color: map-get(variables.$colors, primary);
+  }
+}
+
+nav {
+  background-color: map-get(variables.$colors, primary);
+  padding: 10px;
+  box-shadow: 0 4px 12px map-get(variables.$colors, primary);
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  a {
+    text-decoration: none;
+    color: map-get(variables.$colors, bg);
+    font-weight: 100;
+
+    &.active {
+      border-bottom: 2px solid map-get(variables.$colors, bg);
+    }
+  }
+}
+
+nav + div {
+  height: 80vh;
+}
+
+footer {
+  background-color: map-get(variables.$colors, primary);
+  color: map-get(variables.$colors, bg);
+  padding: 20px 80px;
+}

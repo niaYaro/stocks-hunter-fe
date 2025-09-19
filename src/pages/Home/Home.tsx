@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './Home.module.scss';
+import { Typography } from '@mui/material';
 
 const Home: React.FC = () => {
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Домашня сторінка</h1>
-      <p className={styles.description}>Ласкаво просимо до нашого додатку!</p>
+      <Typography variant="h4"  className={styles.title}>Home</Typography>
+      <p className={styles.description}>Welcome text!</p>
     </div>
   );
 };

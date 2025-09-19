@@ -1,0 +1,45 @@
+@use "../../variables";
+
+
+.container {
+  padding: 20px;
+  text-align: center;
+  font-family: 'Anton SC', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: map-get(variables.$colors, primary);
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.input {
+  .MuiInputBase-root {
+    font-family: 'Anton SC', sans-serif;
+  }
+}
+
+
+.error {
+  color: map-get(variables.$colors, text);
+  font-size: 0.8rem;
+  margin: 10px 0 0 0;
+}
+
+.token {
+  color: map-get(variables.$colors, primary);
+  word-break: break-all;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
