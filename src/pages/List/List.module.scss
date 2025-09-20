@@ -1,0 +1,14 @@
+@use "../../variables";
+
+.container {
+  padding: 20px;
+  text-align: center;
+
+  .title {
+    color: map-get(variables.$colors, primary);
+  }
+
+  .description {
+    color: map-get(variables.$colors, text);
+  }
+}

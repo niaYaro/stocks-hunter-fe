@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Box, TextField, Button, Typography } from '@mui/material';
 import styles from './Auth.module.scss';
 
@@ -15,8 +16,9 @@ const Auth: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [token, setToken] = useState<string | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
+  const navigate = useNavigate();
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -24,18 +26,18 @@ const Auth: React.FC = () => {
     setUsername('');
     setPassword('');
     setEmail('');
-    setToken(null);
+    // setToken(null);
   };
 
   const validateLogin = (): boolean => {
     const newErrors: FormErrors = {};
     if (!username.trim()) {
-      newErrors.username = "Ім'я користувача обов'язкове";
+      newErrors.username = "Username is required";
     }
     if (!password) {
-      newErrors.password = "Пароль обов'язковий";
+      newErrors.password = "Password is required";
     } else if (password.length < 6) {
-      newErrors.password = 'Пароль має містити щонайменше 6 символів';
+      newErrors.password = 'Password must be at least 6 characters';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -44,17 +46,17 @@ const Auth: React.FC = () => {
   const validateRegister = (): boolean => {
     const newErrors: FormErrors = {};
     if (!username.trim()) {
-      newErrors.username = "Ім'я користувача обов'язкове";
+      newErrors.username = "Username is required";
     }
     if (!email.trim()) {
-      newErrors.email = "Email обов'язковий";
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Невалідний email';
+      newErrors.email = 'Invalid email';
     }
     if (!password) {
-      newErrors.password = "Пароль обов'язковий";
+      newErrors.password = "Password is required";
     } else if (password.length < 6) {
-      newErrors.password = 'Пароль має містити щонайменше 6 символів';
+      newErrors.password = 'Password must be at least 6 characters';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -74,16 +76,17 @@ const Auth: React.FC = () => {
       const response = await axios.post(`http://localhost:5000${endpoint}`, payload);
       
       if (isLogin) {
-        setToken(response.data.token);
+        // setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
+        navigate('/list');
       } else {
-        setToken(null);
-        setErrors({ general: 'Реєстрація успішна! Увійдіть.' });
+        // setToken(null);
+        setErrors({ general: 'Registration successful! Please log in' });
         setTabValue(0); // Переключити на вкладку логіну
       }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setErrors({ general: err.response?.data?.error || 'Помилка сервера' });
+      setErrors({ general: err.response?.data?.error || 'Server error' });
     }
   };
 
@@ -143,11 +146,11 @@ const Auth: React.FC = () => {
             {tabValue === 0 ? 'Log In' : 'Register'}
           </Button>
           {errors.general && <p className={styles.error}>{errors.general}</p>}
-          {token && (
+          {/* {token && (
             <p className={styles.token}>
               Token: {token}
             </p>
-          )}
+          )} */}
         </form>
       </Box>
     </div>
