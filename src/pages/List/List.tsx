@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, TextField, Button } from '@mui/material';
-import styles from './List.module.scss';
+import UserStocksTable from '../../components/UserStocksTable/UserStocksTable';
 import axios from 'axios';
+import styles from './List.module.scss';
 import cn from 'classnames';
 
 interface StockData {
@@ -133,7 +134,7 @@ const List: React.FC = () => {
               Add to list
             </Button>
           </div>}
-          {stocksList.length > 0 && <div>{stocksList.map((stock) => (<p>{stock.general.fullName}</p>))}</div>}
+          <UserStocksTable userStocks={stocksList} />
         </>
       )}
     </div>
