@@ -1,68 +1,9 @@
 @use "../../variables";
 
-.container {
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  row-gap: 12px;
-  align-items: center;
-
-  .title {
-    color: map-get(variables.$colors, primary);
-  }
-
-  .description {
-    color: map-get(variables.$colors, text);
-  }
-
-  .button {
-    font-weight: 100;
-  }
-}
-
-.searchContainer {
-  display: flex;
-  flex-direction: column;
-  row-gap: 12px;
-  width: 100%;
-  max-width: 600px;
-  // margin: 0 auto;
-}
-
-.foundStockDataContainer {
-  background-color: rgba(255, 0, 0, 0.226);
-  width: 100%;
-  max-width: 880px;
-  // margin: 0 auto;
-  padding: 12px 40px;
-  border-radius: 12px;
+.tableHeader {
+  background-color: map-get(variables.$colors, primary);
   
-  .techInd {
-    display: flex;
-    padding: 12px;
-    width: 100%;
-    // column-gap: 12px;
-    justify-content: space-between;
-    align-items: center;
-
-    & > * {
-      width: 100%;
-      border: 1px solid black;
-
-      &:first-child {
-        border-left-width: 2px;
-      }
-      &:last-child {
-        border-right-width: 2px;
-      }
-    }
+  th {
+    color: map-get(variables.$colors, bg);
   }
-}
-
-.positive {
-  color: green;
-}
-.negative {
-  color: red;
 }

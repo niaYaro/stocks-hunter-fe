@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, TextField, Button } from '@mui/material';
+import { Typography, TextField, Button, Alert } from '@mui/material';
 import UserStocksTable from '../../components/UserStocksTable/UserStocksTable';
 import axios from 'axios';
 import styles from './List.module.scss';
@@ -36,6 +36,7 @@ const List: React.FC = () => {
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [requestedStocks, setRequestedStocks] = useState<StockData | null>(null);
   const [stocksList, setStocksList] = useState<StockData[] | []>([]);
+  const [success, setSuccess] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,6 +48,26 @@ const List: React.FC = () => {
         headers: { Authorization: `Bearer ${toket}` },
       });
       setRequestedStocks(() => response.data);
+    } catch (err: any) {
+      console.error("Very error", err.axios.error)
+      navigate('/auth');
+    }
+  };
+
+  const handleAddStock = async (ticker: string) => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/finance/stock', // Replace with your API base URL
+        { symbol: ticker.trim().toUpperCase() },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      setSuccess(response.data.message || `Stock ${ticker} added successfully`);
     } catch (err: any) {
       console.error("Very error", err.axios.error)
       navigate('/auth');
@@ -80,7 +101,7 @@ const List: React.FC = () => {
     } else {
       setIsLogin(false);
     }
-  }, []);
+  }, [success]);
 
   const onePercentPrice = requestedStocks && (requestedStocks?.general.price / 100).toFixed(3) || 0;
   const bbUpperLower = requestedStocks && (requestedStocks?.technicalIndicators.bbValues.upper - requestedStocks?.technicalIndicators.bbValues.lower)?.toFixed(3) || 0;
@@ -130,10 +151,12 @@ const List: React.FC = () => {
             <Button
               variant="contained"
               className={styles.button}
+              onClick={() => handleAddStock(requestedStocks.general.ticker)}
             >
               Add to list
             </Button>
           </div>}
+          {success && <Alert severity="success">{success}</Alert>}
           <UserStocksTable userStocks={stocksList} />
         </>
       )}

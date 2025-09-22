@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { type StockData } from '../../types/types';
+import styles from './UserStocksTable.module.scss';
 
 interface Props {
   userStocks: StockData[];
@@ -18,7 +19,7 @@ const UserStocksTable: React.FC<Props> = (userStocks) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
+        <TableHead className={styles.tableHeader}>
           <TableRow>
             <TableCell align="center">Ticker</TableCell>
             <TableCell align="center">Price</TableCell>
@@ -38,8 +39,8 @@ const UserStocksTable: React.FC<Props> = (userStocks) => {
               <TableCell align="center" component="th" scope="row">
                 {stock.general.ticker}
               </TableCell>
-              <TableCell align="center">{stock.technicalIndicators.rsi}</TableCell>
               <TableCell align="center">{stock.general.price}</TableCell>
+              <TableCell align="center">{stock.technicalIndicators.rsi}</TableCell>
               <TableCell align="center">{stock.technicalIndicators.macd[stock.technicalIndicators.macd.length - 1].MACD.toFixed(2)}</TableCell>
               <TableCell align="center">{stock.technicalIndicators.crossPossition}</TableCell>
               <TableCell align="center">{((stock.technicalIndicators.bbValues.upper - stock.technicalIndicators.bbValues.lower) <= (stock.general.price /100)) ? "Cosolidation" : "No Cosolidation"}</TableCell>
