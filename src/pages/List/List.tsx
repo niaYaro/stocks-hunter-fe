@@ -34,7 +34,7 @@ const List: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [requestedStocks, setRequestedStocks] = useState<StockData | null>(null);
-  // const [stocksList, setStocksList] = useState<StockData[] | []>([]);
+  const [stocksList, setStocksList] = useState<StockData[] | []>([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,13 +62,32 @@ const List: React.FC = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const fetchedUserList = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/finance/user/stocks`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setStocksList(() => response.data.stocks);
+        } catch (err: any) {
+          console.error("Very error", err.axios.error)
+        }
+      }
+      fetchedUserList();
+    } else {
+      setIsLogin(false);
+    }
+  }, []);
+
   const onePercentPrice = requestedStocks && (requestedStocks?.general.price / 100).toFixed(3) || 0;
   const bbUpperLower = requestedStocks && (requestedStocks?.technicalIndicators.bbValues.upper - requestedStocks?.technicalIndicators.bbValues.lower)?.toFixed(3) || 0;
 
   return (
     <div className={styles.container}>
       <Typography variant="h4" className={styles.title}>List</Typography>
-      {isLogin ? (
+      {isLogin && (
         <>
           <form onSubmit={handleSubmit} className={styles.searchContainer}>
             <TextField
@@ -114,9 +133,8 @@ const List: React.FC = () => {
               Add to list
             </Button>
           </div>}
+          {stocksList.length > 0 && <div>{stocksList.map((stock) => (<p>{stock.general.fullName}</p>))}</div>}
         </>
-      ) : (
-        <p className={styles.description}>Redirecting to login...</p>
       )}
     </div>
   );
