@@ -34,7 +34,7 @@ header {
   nav {
     width: 100%;
     background-color: map-get(variables.$colors, primary);
-    padding: 10px;
+    // padding: 10px;
     box-shadow: 0 4px 12px map-get(variables.$colors, primary);
   
     ul {

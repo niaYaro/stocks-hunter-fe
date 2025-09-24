@@ -5,7 +5,7 @@
     align-items: center;
     gap: 16px;
     h2 {
-        font-size: 32px;
+        font-size: 28px;
     }
 }
 .column {
@@ -14,34 +14,32 @@
 
 .logoImgWrapper {
     position: relative;
-    width: 116px;
-    height: 116px;
+    width: 80px;
+    height: 80px;
     img {
-        max-width: 116px;
-        max-height: 116px;
         position: absolute;
         height: 100%;
         object-fit: contain;
     }
 
     .stocksChart {
-        max-width: 32px;
-        max-height: 32px;
+        max-width: 20px;
+        max-height: 20px;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
     .gunScopeInner {
-        max-width: 88px;
-        max-height: 88px;
+        max-width: 60px;
+        max-height: 60px;
         top: 50%;
         left: 50%;
         transform-origin: center;
         transform: translate(-50%, -50%);
     }
     .gunScopeOuter {
-        max-width: 116px;
-        max-height: 116px;
+        max-width: 80px;
+        max-height: 80px;
         top: 50%;
         left: 50%;
         transform-origin: center;

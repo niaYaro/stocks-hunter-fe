@@ -6,17 +6,17 @@ import styles from './SHLogo.module.scss';
 import cn from 'classnames';
 import { Typography } from '@mui/material';
 
-interface SHLogoProps {
+interface SHLogoProps extends React.HTMLAttributes<HTMLDivElement> {
   animationDuration?: "infinite" | "none";
   withTitle?: {
     isTitle: boolean;
     direction?: "horisontal" | "vertical";
   }
 }
-const SHLogo: React.FC<SHLogoProps> = ({ animationDuration = "none", withTitle = {isTitle: true} }) => {
+const SHLogo: React.FC<SHLogoProps> = ({ animationDuration = "none", withTitle = {isTitle: true}, className }) => {
 
   return (
-    <div className={cn(styles.logoWrapper, [
+    <div className={cn(styles.logoWrapper, className, [
           withTitle.direction === "vertical" && styles.column,
         ])}>
       <div className={styles.logoImgWrapper}>

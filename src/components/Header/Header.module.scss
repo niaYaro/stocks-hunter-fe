@@ -1,1 +1,61 @@
 @use "../../variables";
+
+.headerWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 24px;
+}
+
+.logoWrapper {
+  box-sizing: border-box;
+  padding: 0 80px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  .headerLogo {
+    margin: 24px;
+    transform-origin: center;
+    transform: translateX(260%) scale(1.5);
+    animation: titleSlide 1s linear 2s forwards;
+  }
+  .iconsWrapper {
+    position: absolute;
+    right: 84px;
+    opacity: 0;
+    animation: 3s linear 1s appearing forwards;
+  }
+}
+
+@keyframes titleSlide {
+  0% {
+    transform: translateX(260%) scale(1.5);
+    margin: 24px;
+  }
+  10% {
+    transform: translateX(262%) scale(1.5);
+  }
+  90% {
+    transform: translateX(-2%) scale(1);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    margin: 0px;
+  }
+}
+
+@keyframes appearing {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
