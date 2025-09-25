@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ const List: React.FC = () => {
       });
       setRequestedStocks(() => response.data);
     } catch (err: any) {
-      console.error("Very error", err.axios.error)
+      console.error(err.AxiosError.message)
       navigate('/auth');
     }
   };
@@ -44,7 +45,7 @@ const List: React.FC = () => {
         }
       );
     } catch (err: any) {
-      console.error("Very error", err.axios.error)
+      console.error(err.AxiosError.message)
       navigate('/auth');
     }
   };
@@ -73,7 +74,7 @@ const List: React.FC = () => {
           });
           setStocksList(() => response.data.stocks);
         } catch (err: any) {
-          console.error("Very error", err.axios.error)
+          console.error(err.AxiosError.message)
         }
       }
       fetchedUserList();
