@@ -1,0 +1,40 @@
+@use "../../variables";
+
+.button {
+  font-weight: 100;
+}
+
+.foundStockDataContainer {
+  background-color: rgba(255, 0, 0, 0.226);
+  width: 100%;
+  max-width: 880px;
+  padding: 12px 40px;
+  border-radius: 12px;
+
+  .techInd {
+    display: flex;
+    padding: 12px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    & > * {
+      width: 100%;
+      border: 1px solid black;
+
+      &:first-child {
+        border-left-width: 2px;
+      }
+      &:last-child {
+        border-right-width: 2px;
+      }
+    }
+  }
+}
+
+.positive {
+  color: green;
+}
+.negative {
+  color: red;
+}

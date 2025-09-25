@@ -1,42 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Typography, TextField, Button, Alert } from '@mui/material';
-import UserStocksTable from '../../components/UserStocksTable/UserStocksTable';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Typography, TextField, Button } from '@mui/material';
+import UserStocksTable from '../../components/UserStocksTable/UserStocksTable';
+import StockPreview from '../../components/StockPreview/StockPreview';
+import { type StockData } from '../../types/types';
 import styles from './List.module.scss';
-import cn from 'classnames';
-
-interface StockData {
-  general: {
-    fullName: string;
-    price: number;
-    ticker: string;
-    type: string;
-  }
-  technicalIndicators: {
-    bbValues: {
-      lower: number;
-      middle: number;
-      pb: number;
-      upper: number;
-    };
-    crossPossition: "Down" | "Up";
-    macd: {
-      MACD: number;
-      histogram: number;
-      signal: number;
-    }[];
-    rsi: number;
-  }
-}
 
 const List: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [requestedStocks, setRequestedStocks] = useState<StockData | null>(null);
   const [stocksList, setStocksList] = useState<StockData[] | []>([]);
-  const [success, setSuccess] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,8 +33,8 @@ const List: React.FC = () => {
   const handleAddStock = async (ticker: string) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/finance/stock', // Replace with your API base URL
+      await axios.post(
+        'http://localhost:5000/api/finance/stock',
         { symbol: ticker.trim().toUpperCase() },
         {
           headers: {
@@ -67,11 +43,14 @@ const List: React.FC = () => {
           },
         }
       );
-      setSuccess(response.data.message || `Stock ${ticker} added successfully`);
     } catch (err: any) {
       console.error("Very error", err.axios.error)
       navigate('/auth');
     }
+  };
+
+  const handleStockRemoved = (updatedStocks: StockData[]) => {
+    setStocksList(updatedStocks);
   };
 
   useEffect(() => {
@@ -101,10 +80,7 @@ const List: React.FC = () => {
     } else {
       setIsLogin(false);
     }
-  }, [success]);
-
-  const onePercentPrice = requestedStocks && (requestedStocks?.general.price / 100).toFixed(3) || 0;
-  const bbUpperLower = requestedStocks && (requestedStocks?.technicalIndicators.bbValues.upper - requestedStocks?.technicalIndicators.bbValues.lower)?.toFixed(3) || 0;
+  }, [stocksList]);
 
   return (
     <div className={styles.container}>
@@ -125,39 +101,8 @@ const List: React.FC = () => {
               Find
             </Button>
           </form>
-          {requestedStocks && <div className={styles.foundStockDataContainer}>
-            <h3>{requestedStocks?.general.fullName}</h3>
-            <Typography>{requestedStocks.general.price}</Typography>
-            <Typography>{requestedStocks.general.ticker}</Typography>
-            <Typography>{requestedStocks.general.type}</Typography>
-            <div className={styles.techInd}>
-              <Typography className={cn([
-                requestedStocks.technicalIndicators.rsi < 30 && styles.positive,
-                requestedStocks.technicalIndicators.rsi > 65 && styles.negative,
-              ])}>{requestedStocks.technicalIndicators.rsi}</Typography>
-              <Typography className={cn([
-                requestedStocks.technicalIndicators.crossPossition === "Up" && styles.positive,
-                requestedStocks.technicalIndicators.crossPossition === "Down" && styles.negative,
-              ])}>{requestedStocks.technicalIndicators.crossPossition}</Typography>
-
-              <Typography className={cn([
-                requestedStocks.technicalIndicators.macd[requestedStocks?.technicalIndicators.macd.length - 1].MACD <= 0 && styles.positive,
-                requestedStocks.technicalIndicators.macd[requestedStocks?.technicalIndicators.macd.length - 1].MACD > 0 && styles.negative,
-              ])}>{requestedStocks.technicalIndicators.macd[requestedStocks?.technicalIndicators.macd.length - 1].MACD.toFixed(2)}</Typography>
-              <Typography className={cn([
-                bbUpperLower > onePercentPrice ? styles.negative : styles.positive
-              ])}>{bbUpperLower > onePercentPrice ? "No consolidation" : "Consolidation"}</Typography>
-            </div>
-            <Button
-              variant="contained"
-              className={styles.button}
-              onClick={() => handleAddStock(requestedStocks.general.ticker)}
-            >
-              Add to list
-            </Button>
-          </div>}
-          {success && <Alert severity="success">{success}</Alert>}
-          <UserStocksTable userStocks={stocksList} />
+          {requestedStocks && <StockPreview stock={requestedStocks} onStockAdd={handleAddStock} />}
+          <UserStocksTable userStocks={stocksList} onStockRemoved={handleStockRemoved}/>
         </>
       )}
     </div>

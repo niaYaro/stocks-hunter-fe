@@ -2,8 +2,31 @@
 
 .tableHeader {
   background-color: map-get(variables.$colors, primary);
-  
+
   th {
     color: map-get(variables.$colors, bg);
+  }
+}
+
+.message {
+  height: fit-content;
+  padding: 16px;
+  border-radius: 8px;
+  animation: messageBehavior 3s linear 0s;
+  transform: scaleY(0);
+}
+
+@keyframes messageBehavior {
+  0% {
+    transform: scaleY(0);
+  }
+  10% {
+    transform: scaleY(1);
+  }
+  90% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0);
   }
 }
