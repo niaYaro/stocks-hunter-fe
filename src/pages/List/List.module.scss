@@ -21,10 +21,16 @@
   }
 }
 
-.searchContainer {
+.searchForm {
   display: flex;
   flex-direction: column;
   row-gap: 12px;
   width: 100%;
   max-width: 600px;
+}
+.searchContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

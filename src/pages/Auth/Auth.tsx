@@ -12,21 +12,19 @@ interface FormErrors {
 }
 
 const Auth: React.FC = () => {
-  const [tabValue, setTabValue] = useState(0); // 0: Login, 1: Register
+  const [tabValue, setTabValue] = useState(0);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  // const [token, setToken] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const navigate = useNavigate();
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
     setErrors({});
     setUsername('');
     setPassword('');
     setEmail('');
-    // setToken(null);
   };
 
   const validateLogin = (): boolean => {
@@ -146,11 +144,6 @@ const Auth: React.FC = () => {
             {tabValue === 0 ? 'Log In' : 'Register'}
           </Button>
           {errors.general && <p className={styles.error}>{errors.general}</p>}
-          {/* {token && (
-            <p className={styles.token}>
-              Token: {token}
-            </p>
-          )} */}
         </form>
       </Box>
     </div>

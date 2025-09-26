@@ -3,18 +3,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Typography, TextField, Button } from '@mui/material';
+import { Typography, TextField, Button, Box, Tabs, Tab } from '@mui/material';
 import UserStocksTable from '../../components/UserStocksTable/UserStocksTable';
 import StockPreview from '../../components/StockPreview/StockPreview';
 import { type StockData } from '../../types/types';
 import styles from './List.module.scss';
 
 const List: React.FC = () => {
+  const [tabValue, setTabValue] = useState<'search' | 'list'>('search');
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [requestedStocks, setRequestedStocks] = useState<StockData | null>(null);
   const [stocksList, setStocksList] = useState<StockData[] | []>([]);
   const navigate = useNavigate();
+
+  const handleTabChange = () => {
+    if (tabValue === 'search') {
+      setTabValue('list');
+    } else {
+      setTabValue('search');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,28 +93,38 @@ const List: React.FC = () => {
   }, [stocksList]);
 
   return (
-    <div className={styles.container}>
-      <Typography variant="h4" className={styles.title}>List</Typography>
-      {isLogin && (
-        <>
-          <form onSubmit={handleSubmit} className={styles.searchContainer}>
-            <TextField
-              label="Stock symbol"
-              value={selectedStock}
-              onChange={(e) => setSelectedStock(e.target.value)}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              className={styles.button}
-            >
-              Find
-            </Button>
-          </form>
-          {requestedStocks && <StockPreview stock={requestedStocks} onStockAdd={handleAddStock} />}
-          <UserStocksTable userStocks={stocksList} onStockRemoved={handleStockRemoved}/>
-        </>
-      )}
+    <div>
+      <Box sx={{ width: '100%', maxWidth: 400 }}>
+        <Tabs value={tabValue} onChange={handleTabChange} centered>
+          <Tab label="Search" />
+          <Tab label="List" />
+        </Tabs>
+      </Box>
+      <div className={styles.container}>
+        <Typography variant="h4" className={styles.title}>List</Typography>
+        {isLogin && (
+          <>
+            {tabValue === "search" && <div className={styles.searchContainer}>
+              <form onSubmit={handleSubmit} className={styles.searchForm}>
+                <TextField
+                  label="Stock symbol"
+                  value={selectedStock}
+                  onChange={(e) => setSelectedStock(e.target.value)}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className={styles.button}
+                >
+                  Find
+                </Button>
+              </form>
+              {requestedStocks && <StockPreview stock={requestedStocks} onStockAdd={handleAddStock} />}
+            </div>}
+            {tabValue === "list" && <UserStocksTable userStocks={stocksList} onStockRemoved={handleStockRemoved} />}
+          </>
+        )}
+      </div>
     </div>
   );
 };
