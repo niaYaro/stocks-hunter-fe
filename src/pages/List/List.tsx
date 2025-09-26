@@ -10,7 +10,7 @@ import { type StockData } from '../../types/types';
 import styles from './List.module.scss';
 
 const List: React.FC = () => {
-  const [tabValue, setTabValue] = useState<'search' | 'list'>('search');
+  const [tabValue, setTabValue] = useState(0);
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [requestedStocks, setRequestedStocks] = useState<StockData | null>(null);
@@ -18,10 +18,10 @@ const List: React.FC = () => {
   const navigate = useNavigate();
 
   const handleTabChange = () => {
-    if (tabValue === 'search') {
-      setTabValue('list');
+    if (tabValue === 0) {
+      setTabValue(1);
     } else {
-      setTabValue('search');
+      setTabValue(0);
     }
   };
 
@@ -94,7 +94,7 @@ const List: React.FC = () => {
 
   return (
     <div>
-      <Box sx={{ width: '100%', maxWidth: 400 }}>
+      <Box sx={{ width: '100%' }}>
         <Tabs value={tabValue} onChange={handleTabChange} centered>
           <Tab label="Search" />
           <Tab label="List" />
@@ -104,7 +104,7 @@ const List: React.FC = () => {
         <Typography variant="h4" className={styles.title}>List</Typography>
         {isLogin && (
           <>
-            {tabValue === "search" && <div className={styles.searchContainer}>
+            {tabValue === 0 && <div className={styles.searchContainer}>
               <form onSubmit={handleSubmit} className={styles.searchForm}>
                 <TextField
                   label="Stock symbol"
@@ -121,7 +121,7 @@ const List: React.FC = () => {
               </form>
               {requestedStocks && <StockPreview stock={requestedStocks} onStockAdd={handleAddStock} />}
             </div>}
-            {tabValue === "list" && <UserStocksTable userStocks={stocksList} onStockRemoved={handleStockRemoved} />}
+            {tabValue === 1 && <UserStocksTable userStocks={stocksList} onStockRemoved={handleStockRemoved} />}
           </>
         )}
       </div>
