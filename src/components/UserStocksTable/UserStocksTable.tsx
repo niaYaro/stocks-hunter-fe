@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import { type StockData } from '../../types/types';
 import styles from './UserStocksTable.module.scss';
 import { Typography } from '@mui/material';
+import cn from 'classnames';
 
 interface Props {
   userStocks: StockData[];
@@ -67,14 +68,24 @@ const UserStocksTable: React.FC<Props> = ({ userStocks, onStockRemoved }) => {
                 key={stock.general.ticker}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell align="center" component="th" scope="row">
+                <TableCell align="center" component="th" scope="row" className={styles.bgPrimary}>
                   {stock.general.ticker}
                 </TableCell>
-                <TableCell align="center">{stock.general.price}</TableCell>
-                <TableCell align="center">{stock.technicalIndicators.rsi}</TableCell>
-                <TableCell align="center">{stock.technicalIndicators.macd[stock.technicalIndicators.macd.length - 1].MACD.toFixed(2)}</TableCell>
+                <TableCell align="center">{stock.general.price.toFixed(2)}</TableCell>
+                <TableCell className={cn([
+                  stock.technicalIndicators.rsi > 70 && styles.negative,
+                  stock.technicalIndicators.rsi < 30 && styles.positive,
+                ])} align="center">{stock.technicalIndicators.rsi}</TableCell>
+                <TableCell className={cn([
+                  stock.technicalIndicators.macd[stock.technicalIndicators.macd.length - 1].MACD > (stock.general.price / 100) && styles.negative,
+                  stock.technicalIndicators.macd[stock.technicalIndicators.macd.length - 1].MACD <= 0 && styles.positive,
+                ])} align="center">{stock.technicalIndicators.macd[stock.technicalIndicators.macd.length - 1].MACD.toFixed(2)}</TableCell>
                 <TableCell align="center">{stock.technicalIndicators.crossPossition}</TableCell>
-                <TableCell align="center">{((stock.technicalIndicators.bbValues.upper - stock.technicalIndicators.bbValues.lower) <= (stock.general.price / 100)) ? "Cosolidation" : "No Cosolidation"}</TableCell>
+                <TableCell align="center">
+                  {/* {stock.technicalIndicators.macd.map((macdItem) => (
+                    <p>{macdItem.MACD}</p>
+                  ))} */}
+                </TableCell>
                 <TableCell align="center">
                   <Button
                     variant="contained"

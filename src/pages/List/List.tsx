@@ -12,7 +12,7 @@ import styles from './List.module.scss';
 const List: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [selectedStock, setSelectedStock] = useState<string | null>(null);
+  const [selectedStock, setSelectedStock] = useState<string>('');
   const [requestedStocks, setRequestedStocks] = useState<StockData | null>(null);
   const [stocksList, setStocksList] = useState<StockData[] | []>([]);
   const navigate = useNavigate();
@@ -83,14 +83,16 @@ const List: React.FC = () => {
           });
           setStocksList(() => response.data.stocks);
         } catch (err: any) {
-          console.error(err.AxiosError.message)
+          console.error(err.message)
+          setIsLogin(false);
+          navigate('/auth');
         }
       }
       fetchedUserList();
     } else {
       setIsLogin(false);
     }
-  }, [stocksList]);
+  }, [navigate, stocksList]);
 
   return (
     <div>

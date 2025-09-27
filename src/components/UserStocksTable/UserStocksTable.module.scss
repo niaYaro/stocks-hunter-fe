@@ -16,6 +16,18 @@
   transform: scaleY(0);
 }
 
+.bgPrimary {
+  background-color: map-get(variables.$colors, primary);
+  color: map-get(variables.$colors, bg) !important;
+}
+
+.positive {
+  background-color: rgb(106, 173, 106);
+}
+.negative {
+  background-color: rgb(224, 94, 94);
+}
+
 @keyframes messageBehavior {
   0% {
     transform: scaleY(0);
